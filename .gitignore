@@ -1,0 +1,15 @@
+web/apache/sites-enabled/*
+!web/apache/sites-enabled/000-default.conf
+!web/apache/sites-enabled/web.localhost.conf
+web/apache/logs/*
+weblegacy/apache/sites-enabled/*
+!weblegacy/apache/sites-enabled/000-default.conf
+!weblegacy/apache/sites-enabled/weblegacy.localhost.conf
+weblegacy/apache/logs/*
+redis/data
+mysql/data
+mysql/temp/*
+mongo/data
+mongo/temp/*
+docker-compose.yml
+!*.gitkeep

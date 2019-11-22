@@ -1,0 +1,81 @@
+version: '3.7'
+services:
+  web:
+    build: ./web
+    image: 'ubuntu:oastrustyseven'
+    container_name: oas-web
+    volumes:
+      - './web/apache/logs:/var/log/apache2'
+      - './../code:/var/www'
+    tty: true
+    ports:
+      - '80:80'
+      - '443:443'
+      - '6001:6001'
+    environment:
+      - APPLICATION_ENV=dev
+    networks:
+      oas: null
+  weblegacy:
+    build: ./weblegacy
+    image: 'ubuntu:oastrustyfive'
+    container_name: oas-weblegacy
+    volumes:
+      - './weblegacy/apache/logs:/var/log/apache2'
+      - './../code:/var/www'
+    tty: true
+    ports:
+      - '8081:80'
+    environment:
+      - APPLICATION_ENV=dev
+    networks:
+      oas: null
+  memcached:
+    image: 'memcached:alpine'
+    container_name: oas-memcached
+    networks:
+      oas: null
+  mailhog:
+    image: 'mailhog/mailhog:latest'
+    container_name: oas-mailhog
+    ports:
+      - '8025:8025'
+    networks:
+      oas: null
+  redis:
+    image: 'redis:latest'
+    container_name: oas-redis
+    volumes:
+      - './redis/data:/data'
+    networks:
+      oas: null
+  mysql:
+    image: 'mysql:5.6'
+    restart: always
+    container_name: oas-mysql
+    volumes:
+      - './mysql/data:/var/lib/mysql'
+      - './mysql/conf.d:/etc/mysql/conf.d'
+      - './mysql/temp:/mytemp'
+    environment:
+      - MYSQL_ROOT_PASSWORD=mayor
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=captain
+      - MYSQL_PASSWORD=captain
+    ports:
+      - '3306:3306'
+    networks:
+      oas: null
+  mongo:
+    image: 'mongo:4.0'
+    restart: always
+    container_name: oas-mongo
+    volumes:
+      - './mongo/data:/data/db'
+      - './mongo/temp:/mytemp'
+    ports:
+      - '27017:27017'
+    networks:
+      oas: null
+networks:
+  oas: null
